@@ -110,7 +110,8 @@ fn main() {
     let ex2b = pig_latin("apple".to_string()).unwrap();
     println!("res1: {ex2a} res2: {ex2b}");
 
-    // exercise 3
+    // exercise 3, this should be similar to exercise no 1 and
+    // previous lesson
 }
 
 enum Cell {
