@@ -1,7 +1,8 @@
-use std::fs::File;
+use std::error::Error;
+use std::fs::{self, File};
 use std::io::{self, ErrorKind, Read};
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let greeting_file_res = File::open("hello.txt");
     let greeting_file = match greeting_file_res {
         Ok(file) => file,
@@ -16,6 +17,8 @@ fn main() {
         },
     };
     println!("{greeting_file:?}");
+    let greeting_file = File::open("hello.txt")?;
+    Ok(())
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
@@ -43,4 +46,12 @@ fn read_username_from_file3() -> Result<String, io::Error> {
     let mut username = String::new();
     File::open("hello.txt")?.read_to_string(&mut username)?;
     Ok(username)
+}
+
+fn read_username_from_file4() -> Result<String, io::Error> {
+    fs::read_to_string("hello.txt")
+}
+
+fn last_char_of_first_line(text: &str) -> Option<char> {
+    text.lines().next()?.chars().last()
 }
