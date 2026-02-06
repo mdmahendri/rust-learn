@@ -8,6 +8,17 @@ fn main() {
     // largest_in_vec(&numb_list);
     let result = largest(&numb_list);
     println!("the largest number is {result}");
+
+    let p = Point { x: 5, y: 10 };
+    println!("p.x = {}", p.x());
+
+    let p2 = Point { x: 5.1, y: 8.7 };
+    println!("distance from origin: {}", p2.distance_from_origin());
+
+    let p3a = Point2 { x: 5, y: 10.4 };
+    let p3b = Point2 { x: "Hello", y: 'c' };
+    let p3c = p3a.mixup(p3b);
+    println!("p3.x = {}, p3.y = {}", p3c.x, p3c.y);
 }
 
 // trying out before looking 10.3
@@ -36,4 +47,49 @@ fn largest(list: &[i32]) -> &i32 {
     }
 
     largest
+}
+
+// fn largest2<T>(list: &[T]) -> &T {
+//     let mut largest = &list[0];
+
+//     for item in list {
+//         if item > largest {
+//             largest = item;
+//         }
+//     }
+
+//     largest
+// }
+
+// example is Option<T>
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
+impl Point<f64> {
+    fn distance_from_origin(&self) -> f64 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+
+impl<X1, Y1> Point2<X1, Y1> {
+    fn mixup<X2, Y2>(self, other: Point2<X2, Y2>) -> Point2<X1, Y2> {
+        Point2 {
+            x: self.x,
+            y: other.y,
+        }
+    }
+}
+
+// example is Result<T, E>
+struct Point2<T, U> {
+    x: T,
+    y: U,
 }
