@@ -1,3 +1,5 @@
+use ch10::{NewsArticle, SocialPost, Summary};
+
 fn main() {
     let numb_list = vec![34, 50, 25, 100, 65];
     // largest_in_vec(&numb_list);
@@ -19,6 +21,37 @@ fn main() {
     let p3b = Point2 { x: "Hello", y: 'c' };
     let p3c = p3a.mixup(p3b);
     println!("p3.x = {}, p3.y = {}", p3c.x, p3c.y);
+
+    let post = SocialPost {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        repost: false,
+    };
+
+    println!("1 new post: {}", post.summarize());
+
+    let article = NewsArticle {
+        headline: String::from("penguins wins"),
+        location: String::from("Pittsburh, PA"),
+        author: String::from("Iceburgh"),
+        content: String::from(
+            "the pittsburgh penguin \
+        once again...",
+        ),
+    };
+
+    println!("1 news article: {}", article.summarize());
+
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    print!("the longest string is {result}");
+}
+
+fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() > s2.len() { s1 } else { s2 }
 }
 
 // trying out before looking 10.3
