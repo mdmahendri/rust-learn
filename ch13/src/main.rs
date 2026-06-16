@@ -83,4 +83,9 @@ fn main() {
     for val in v1_iter {
         println!("Got: {val}");
     }
+
+    let v2 = vec![1, 2, 3];
+    let v2_iter = v2.iter();
+    let total: i32 = v2_iter.sum();
+    
 }
