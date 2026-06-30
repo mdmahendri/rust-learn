@@ -1,6 +1,6 @@
 use std::thread;
 use std::time::Duration;
-use trpl::{Either, Html};
+use trpl::{Either, Html, StreamExt};
 
 async fn page_title(url: &str) -> (&str, Option<String>) {
     let response = trpl::get(url).await;
@@ -129,6 +129,16 @@ fn main() {
         match timeout(slow, Duration::from_secs(1)).await {
             Ok(message) => println!("slow task completed: {message}"),
             Err(duration) => println!("failed after: {} seconds", duration.as_secs()),
+        }
+    });
+
+    trpl::block_on(async {
+        let values = [1, 2, 3];
+        let iter = values.iter().map(|n| n * 2);
+        let mut stream = trpl::stream_from_iter(iter);
+
+        while let Some(value) = stream.next().await {
+            println!("The value was: {value}");
         }
     });
 }
