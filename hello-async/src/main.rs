@@ -1,5 +1,6 @@
 use std::thread;
 use std::time::Duration;
+use std::pin::{pin, Pin};
 use trpl::{Either, Html, StreamExt};
 
 async fn page_title(url: &str) -> (&str, Option<String>) {
@@ -141,6 +142,30 @@ fn main() {
             println!("The value was: {value}");
         }
     });
+
+    trpl::block_on(async {
+        let tx1_fut = pin!(async move {});
+        let rx_fut = pin!(async move {});
+        let tx2_fut = pin!(async move {});
+
+        let futures: Vec<Pin<&mut dyn Future<Output = ()>>> = vec![tx1_fut, rx_fut, tx2_fut];
+
+        trpl::join_all(futures).await;
+    });
+
+    let (tx9, mut rx9) = trpl::channel();
+    thread::spawn(move || {
+        for i in 1..3 {
+            tx9.send(i).unwrap();
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    trpl::block_on(async {
+        while let Some(msg) = rx9.recv().await {
+            println!("got msg: {msg}");
+        }
+    })
 }
 
 async fn timeout<F: Future>(
