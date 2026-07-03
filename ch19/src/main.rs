@@ -10,6 +10,15 @@ struct Point {
     y: i32,
 }
 
+enum Color {
+    Rgb(i32, i32, i32),
+}
+
+enum Message {
+    ChangeColor(Color),
+    Quit,
+}
+
 fn main() {
     let (tx, rx) = std::sync::mpsc::channel();
     std::thread::spawn(move || {
@@ -48,4 +57,22 @@ fn main() {
     let p = Point { x: 0, y: 7};
     let Point { x: v, y: w } = p;
     println!("point destructuring: {v} {w}");
+
+    let msg = Message::ChangeColor(Color::Rgb(0, 160, 255));
+
+    match msg {
+        Message::ChangeColor(Color::Rgb(r, g, b)) => {
+            println!("change to r {r}, g {g}, b {b}");
+        }
+        Message::Quit => {
+            println!("quit");
+        }
+    }
+
+    let numbers = (9, 2, 5, 5, 7);
+    match numbers {
+        (a, _, b, _, c) => {
+            println!("a is {a}, b is {b}, c is {c}");
+        }
+    }
 }
